@@ -9,41 +9,13 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --bg: #0a0a0f;
-    --surface: #14141c;
-    --surface2: #1e1e2e;
-    --accent: #7c6cfc;
-    --accent2: #a78bfa;
-    --text: #f0eeff;
-    --muted: #6b6886;
-    --success: #4ade80;
-    --danger: #f87171;
-    --radius: 18px;
+    --bg: #0a0a0f; --surface: #14141c; --surface2: #1e1e2e;
+    --accent: #7c6cfc; --accent2: #a78bfa; --text: #f0eeff;
+    --muted: #6b6886; --success: #4ade80; --danger: #f87171; --radius: 18px;
   }
-  html, body {
-    height: 100%; background: var(--bg); color: var(--text);
-    font-family: -apple-system, 'SF Pro Display', sans-serif;
-    overflow: hidden; -webkit-font-smoothing: antialiased;
-  }
-  .screen { display: none; flex-direction: column; height: 100vh; height: 100dvh;
-    padding: max(env(safe-area-inset-top), 28px) 20px max(env(safe-area-inset-bottom), 16px);
-    gap: 12px; }
+  html, body { height: 100%; background: var(--bg); color: var(--text); font-family: -apple-system, 'SF Pro Display', sans-serif; overflow: hidden; -webkit-font-smoothing: antialiased; }
+  .screen { display: none; flex-direction: column; height: 100vh; height: 100dvh; padding: max(env(safe-area-inset-top), 28px) 20px max(env(safe-area-inset-bottom), 16px); gap: 12px; }
   .screen.active { display: flex; }
-
-  /* SETUP */
-  .setup-body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; text-align: center; }
-  .setup-icon { width: 80px; height: 80px; background: linear-gradient(135deg, var(--accent), var(--accent2)); border-radius: 22px; display: flex; align-items: center; justify-content: center; font-size: 38px; box-shadow: 0 12px 36px rgba(124,108,252,0.4); }
-  .setup-title { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; background: linear-gradient(135deg, var(--text), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-  .setup-sub { font-size: 15px; color: var(--muted); line-height: 1.6; max-width: 300px; }
-  .setup-sub a { color: var(--accent2); text-decoration: none; }
-  .key-field { width: 100%; background: var(--surface2); border: 1.5px solid #ffffff12; border-radius: 14px; padding: 16px; color: var(--text); font-size: 15px; font-family: 'SF Mono', monospace; outline: none; transition: border-color 0.2s; -webkit-appearance: none; }
-  .key-field:focus { border-color: var(--accent); }
-  .key-field::placeholder { color: var(--muted); font-family: -apple-system, sans-serif; }
-  .key-note { font-size: 12px; color: var(--muted); line-height: 1.5; }
-  .btn-primary { width: 100%; background: linear-gradient(135deg, var(--accent), #6d5cf6); color: #fff; border: none; border-radius: 16px; font-size: 17px; font-family: inherit; font-weight: 600; padding: 18px; cursor: pointer; box-shadow: 0 8px 28px rgba(124,108,252,0.35); }
-  .btn-primary:active { transform: scale(0.97); }
-  .error-msg { color: var(--danger); font-size: 13px; display: none; }
-  .error-msg.visible { display: block; }
 
   /* HEADER */
   .header { display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
@@ -54,8 +26,6 @@
   .pill-btn { background: var(--surface2); border: none; color: var(--muted); font-size: 13px; font-family: inherit; padding: 7px 14px; border-radius: 20px; cursor: pointer; display: none; }
   .pill-btn.visible { display: block; }
   .pill-btn:active { background: var(--surface); }
-  .icon-btn { background: var(--surface2); border: none; color: var(--muted); font-size: 16px; width: 34px; height: 34px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-  .icon-btn:active { background: var(--surface); }
 
   /* PREVIEW */
   .preview-wrap { flex: 1; min-height: 0; border-radius: var(--radius); overflow: hidden; position: relative; background: var(--surface); border: 1.5px solid #ffffff08; }
@@ -71,48 +41,47 @@
   .scanning-label { font-size: 14px; color: var(--accent2); font-weight: 500; }
 
   /* RESULT */
-  .result-panel { background: var(--surface); border-radius: var(--radius); border: 1.5px solid #ffffff08; padding: 14px; display: none; flex-direction: column; gap: 10px; max-height: 28vh; flex-shrink: 0; }
+  .result-panel { background: var(--surface); border-radius: var(--radius); border: 1.5px solid #ffffff08; padding: 14px; display: none; flex-direction: column; gap: 10px; max-height: 24vh; flex-shrink: 0; }
   .result-panel.visible { display: flex; }
   .result-header { display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
   .result-label { font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
   .copy-btn { background: none; border: none; color: var(--accent2); font-size: 12px; font-family: inherit; font-weight: 600; cursor: pointer; padding: 4px 8px; border-radius: 8px; }
   .copy-btn:active { background: var(--surface2); }
   .result-text { font-size: 15px; line-height: 1.7; color: var(--text); overflow-y: auto; flex: 1; min-height: 0; font-weight: 300; -webkit-overflow-scrolling: touch; }
+  .result-text .word { cursor: pointer; border-radius: 3px; padding: 0 1px; }
+  .result-text .word.active { background: #3a2f80; color: #c9bcfe; }
 
-  /* PLAYBACK CONTROLS */
+  /* PLAYBACK */
   .playback-panel { background: var(--surface); border-radius: var(--radius); border: 1.5px solid #ffffff08; padding: 14px 16px; display: none; flex-direction: column; gap: 12px; flex-shrink: 0; }
   .playback-panel.visible { display: flex; }
-
-  /* Progress bar */
   .progress-wrap { display: flex; flex-direction: column; gap: 6px; }
   .progress-times { display: flex; justify-content: space-between; }
   .progress-time { font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
-  .progress-bar-track { width: 100%; height: 4px; background: var(--surface2); border-radius: 2px; position: relative; cursor: pointer; padding: 8px 0; margin: -8px 0; }
-  .progress-bar-fill { height: 4px; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 2px; width: 0%; pointer-events: none; position: relative; top: 0; }
-  .progress-thumb { width: 14px; height: 14px; background: var(--accent2); border-radius: 50%; position: absolute; top: 50%; transform: translate(-50%, -50%); left: 0%; pointer-events: none; box-shadow: 0 0 6px rgba(167,139,250,0.6); }
+  .progress-bar-track { width: 100%; height: 28px; display: flex; align-items: center; position: relative; cursor: pointer; touch-action: none; }
+  .progress-bar-bg { width: 100%; height: 4px; background: var(--surface2); border-radius: 2px; position: relative; }
+  .progress-bar-fill { height: 4px; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 2px; width: 0%; position: absolute; left: 0; top: 0; pointer-events: none; }
+  .progress-thumb { width: 18px; height: 18px; background: var(--accent2); border-radius: 50%; position: absolute; top: 50%; transform: translate(-50%, -50%); left: 0%; box-shadow: 0 0 8px rgba(167,139,250,0.7), 0 2px 4px rgba(0,0,0,0.3); transition: transform 0.1s; }
+  .progress-thumb.dragging { transform: translate(-50%, -50%) scale(1.3); }
 
-  /* Transport row */
   .transport { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-  .skip-btn { background: none; border: none; color: var(--muted); font-size: 22px; cursor: pointer; padding: 6px; border-radius: 10px; transition: color 0.15s; display: flex; align-items: center; justify-content: center; }
+  .skip-btn { background: none; border: none; color: var(--muted); font-size: 22px; cursor: pointer; padding: 6px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
   .skip-btn:active { color: var(--text); background: var(--surface2); }
-  .skip-btn:disabled { opacity: 0.25; pointer-events: none; }
-  .play-btn { width: 54px; height: 54px; background: linear-gradient(135deg, var(--accent), #6d5cf6); border: none; border-radius: 50%; font-size: 22px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 20px rgba(124,108,252,0.4); transition: all 0.15s; }
+  .play-btn { width: 54px; height: 54px; background: linear-gradient(135deg, var(--accent), #6d5cf6); border: none; border-radius: 50%; font-size: 22px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 20px rgba(124,108,252,0.4); }
   .play-btn:active { transform: scale(0.93); }
-  .play-btn:disabled { opacity: 0.3; pointer-events: none; }
 
-  /* Speed + Language row */
-  .settings-row { display: flex; gap: 8px; align-items: center; }
+  .settings-row { display: flex; gap: 8px; }
   .setting-group { flex: 1; display: flex; flex-direction: column; gap: 5px; }
   .setting-label { font-size: 10px; color: var(--muted); font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; }
-  .setting-select { background: var(--surface2); border: 1.5px solid #ffffff10; border-radius: 10px; color: var(--text); font-size: 13px; font-family: inherit; padding: 8px 10px; outline: none; -webkit-appearance: none; appearance: none; width: 100%; cursor: pointer; }
   .speed-chips { display: flex; gap: 5px; }
-  .speed-chip { flex: 1; background: var(--surface2); border: 1.5px solid #ffffff08; border-radius: 8px; color: var(--muted); font-size: 12px; font-family: inherit; font-weight: 500; padding: 7px 4px; cursor: pointer; text-align: center; transition: all 0.15s; }
+  .speed-chip { flex: 1; background: var(--surface2); border: 1.5px solid #ffffff08; border-radius: 8px; color: var(--muted); font-size: 12px; font-family: inherit; font-weight: 500; padding: 7px 4px; cursor: pointer; text-align: center; }
   .speed-chip.active { background: #2a1f5c; border-color: var(--accent); color: var(--accent2); }
   .speed-chip:active { transform: scale(0.95); }
+  .setting-select { background: var(--surface2); border: 1.5px solid #ffffff10; border-radius: 10px; color: var(--text); font-size: 13px; font-family: inherit; padding: 8px 10px; outline: none; -webkit-appearance: none; width: 100%; cursor: pointer; }
+  .translate-note { font-size: 11px; color: var(--muted); line-height: 1.4; }
 
   /* ACTIONS */
   .actions { display: flex; gap: 10px; flex-shrink: 0; }
-  .btn-camera { flex: 1; background: linear-gradient(135deg, var(--accent), #6d5cf6); color: #fff; border: none; border-radius: 16px; font-size: 16px; font-family: inherit; font-weight: 600; padding: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.15s; -webkit-tap-highlight-color: transparent; box-shadow: 0 8px 28px rgba(124,108,252,0.35); }
+  .btn-camera { flex: 1; background: linear-gradient(135deg, var(--accent), #6d5cf6); color: #fff; border: none; border-radius: 16px; font-size: 16px; font-family: inherit; font-weight: 600; padding: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 8px 28px rgba(124,108,252,0.35); }
   .btn-camera:active { transform: scale(0.97); }
 
   /* SHEET */
@@ -125,7 +94,6 @@
   .sheet-btn:active { background: #2a2a3e; }
   .sheet-btn-icon { font-size: 22px; }
   .sheet-cancel { background: var(--surface); border: none; border-radius: 14px; color: var(--danger); font-size: 16px; font-family: inherit; font-weight: 600; padding: 16px; cursor: pointer; margin-top: 4px; }
-  .sheet-cancel:active { background: #2a1a1a; }
 
   .hidden-input { display: none; }
   .toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(16px); background: var(--surface2); color: var(--text); font-size: 14px; font-weight: 500; padding: 10px 20px; border-radius: 20px; opacity: 0; transition: all 0.25s; pointer-events: none; white-space: nowrap; border: 1px solid #ffffff10; z-index: 99; }
@@ -134,21 +102,7 @@
 </head>
 <body>
 
-<!-- SETUP SCREEN -->
-<div class="screen active" id="setupScreen">
-  <div class="setup-body">
-    <div class="setup-icon">👁</div>
-    <div><div class="setup-title">Lens & Listen</div></div>
-    <div class="setup-sub">To read text from photos, you need a free Claude API key.<br><br>Get one at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> → API Keys → Create Key</div>
-    <input class="key-field" id="apiKeyInput" type="password" placeholder="Paste your API key (sk-ant-…)" autocomplete="off" autocorrect="off" spellcheck="false" />
-    <div class="error-msg" id="errorMsg">Doesn't look right — should start with sk-ant-</div>
-    <div class="key-note">🔒 Saved only on this device. Never shared anywhere except Anthropic.</div>
-    <button class="btn-primary" id="saveKeyBtn">Save & Open App</button>
-  </div>
-</div>
-
-<!-- MAIN SCREEN -->
-<div class="screen" id="mainScreen">
+<div class="screen active" id="mainScreen">
   <div class="header">
     <div class="logo">
       <div class="logo-icon">👁</div>
@@ -156,7 +110,6 @@
     </div>
     <div class="header-actions">
       <button class="pill-btn" id="clearBtn">Clear</button>
-      <button class="icon-btn" id="settingsBtn">⚙️</button>
     </div>
   </div>
 
@@ -168,7 +121,7 @@
     <img class="preview-img" id="previewImg" alt="Captured" />
     <div class="scanning-overlay" id="scanningOverlay">
       <div class="spinner"></div>
-      <div class="scanning-label">Reading text…</div>
+      <div class="scanning-label" id="scanningLabel">Reading text…</div>
     </div>
   </div>
 
@@ -180,12 +133,12 @@
     <div class="result-text" id="resultText"></div>
   </div>
 
-  <!-- PLAYBACK PANEL -->
   <div class="playback-panel" id="playbackPanel">
-    <!-- Progress -->
     <div class="progress-wrap">
       <div class="progress-bar-track" id="progressTrack">
-        <div class="progress-bar-fill" id="progressFill"></div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="progressFill"></div>
+        </div>
         <div class="progress-thumb" id="progressThumb"></div>
       </div>
       <div class="progress-times">
@@ -194,16 +147,14 @@
       </div>
     </div>
 
-    <!-- Transport -->
     <div class="transport">
-      <button class="skip-btn" id="skipBackBtn" title="Back 10s">⏪</button>
-      <button class="skip-btn" id="restartBtn" title="Restart">⏮</button>
+      <button class="skip-btn" id="skipBackBtn">⏪</button>
+      <button class="skip-btn" id="restartBtn">⏮</button>
       <button class="play-btn" id="playBtn">▶️</button>
-      <button class="skip-btn" id="skipFwdBtn" title="Forward 10s">⏩</button>
-      <button class="skip-btn" id="skipEndBtn" title="Skip to end">⏭</button>
+      <button class="skip-btn" id="skipFwdBtn">⏩</button>
+      <button class="skip-btn" id="skipEndBtn">⏭</button>
     </div>
 
-    <!-- Speed + Language -->
     <div class="settings-row">
       <div class="setting-group">
         <div class="setting-label">Speed</div>
@@ -218,7 +169,29 @@
     </div>
     <div class="settings-row">
       <div class="setting-group">
-        <div class="setting-label">Language / Voice</div>
+        <div class="setting-label">Speak In</div>
+        <select class="setting-select" id="languageSelect">
+          <option value="original">Original language (as written)</option>
+          <option value="en">English</option>
+          <option value="es">Spanish</option>
+          <option value="fr">French</option>
+          <option value="de">German</option>
+          <option value="it">Italian</option>
+          <option value="pt">Portuguese</option>
+          <option value="zh">Chinese (Mandarin)</option>
+          <option value="ja">Japanese</option>
+          <option value="ko">Korean</option>
+          <option value="ar">Arabic</option>
+          <option value="hi">Hindi</option>
+          <option value="ru">Russian</option>
+          <option value="vi">Vietnamese</option>
+          <option value="tl">Tagalog</option>
+        </select>
+      </div>
+    </div>
+    <div class="settings-row">
+      <div class="setting-group">
+        <div class="setting-label">Voice</div>
         <select class="setting-select" id="voiceSelect"></select>
       </div>
     </div>
@@ -229,7 +202,6 @@
   </div>
 </div>
 
-<!-- SOURCE SHEET -->
 <div class="sheet-overlay" id="sheetOverlay">
   <div class="sheet">
     <div class="sheet-handle"></div>
@@ -247,53 +219,57 @@
 <div class="toast" id="toast"></div>
 
 <script>
-// ── State ──
-let apiKey = localStorage.getItem('ll_api_key') || '';
-let extractedText = '';
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const WORKER_URL = 'https://photo-reader-n60m.onrender.com';
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+let extractedText = '';      // original extracted text (always shown in result panel)
+let speakText = '';          // text actually being spoken (may be translated)
 let sentences = [];
 let currentSentence = 0;
 let speaking = false;
 let speechRate = 1;
-let selectedVoice = null;
 let estimatedDuration = 0;
 let elapsed = 0;
 let timerInterval = null;
+let isDragging = false;
+let targetLanguage = 'original';
 
-// ── Routing ──
-function showMain() { document.getElementById('setupScreen').classList.remove('active'); document.getElementById('mainScreen').classList.add('active'); }
-function showSetup() { document.getElementById('mainScreen').classList.remove('active'); document.getElementById('setupScreen').classList.add('active'); document.getElementById('apiKeyInput').value = apiKey || ''; }
-if (apiKey) showMain();
+// ── Voices ──
+const LANG_LOCALE_MAP = {
+  en: 'en', es: 'es', fr: 'fr', de: 'de', it: 'it', pt: 'pt',
+  zh: 'zh', ja: 'ja', ko: 'ko', ar: 'ar', hi: 'hi', ru: 'ru', vi: 'vi', tl: 'tl,fil'
+};
 
-document.getElementById('saveKeyBtn').addEventListener('click', () => {
-  const val = document.getElementById('apiKeyInput').value.trim();
-  const errEl = document.getElementById('errorMsg');
-  if (!val.startsWith('sk-ant-') && !val.startsWith('sk-')) { errEl.classList.add('visible'); return; }
-  errEl.classList.remove('visible');
-  apiKey = val; localStorage.setItem('ll_api_key', val); showMain();
-});
-document.getElementById('settingsBtn').addEventListener('click', showSetup);
-
-// ── Voice loading ──
 function loadVoices() {
   const voices = speechSynthesis.getVoices();
   if (!voices.length) return;
+  populateVoiceList();
+}
+
+function populateVoiceList() {
+  const voices = speechSynthesis.getVoices();
   const sel = document.getElementById('voiceSelect');
   const prev = sel.value;
   sel.innerHTML = '';
 
-  // Group by language
+  let filtered = voices;
+  if (targetLanguage !== 'original') {
+    const codes = LANG_LOCALE_MAP[targetLanguage].split(',');
+    filtered = voices.filter(v => codes.some(c => v.lang.toLowerCase().startsWith(c)));
+    if (!filtered.length) filtered = voices; // fallback to all if none found
+  }
+
   const seen = new Set();
   const grouped = {};
-  voices.forEach(v => {
+  filtered.forEach(v => {
     const key = v.lang + '|' + v.name;
     if (seen.has(key)) return;
     seen.add(key);
-    const lang = v.lang.split('-')[0].toUpperCase();
     if (!grouped[v.lang]) grouped[v.lang] = [];
     grouped[v.lang].push(v);
   });
 
-  // Sort languages, English first
   const langs = Object.keys(grouped).sort((a, b) => {
     if (a.startsWith('en')) return -1;
     if (b.startsWith('en')) return 1;
@@ -307,18 +283,15 @@ function loadVoices() {
       const opt = document.createElement('option');
       opt.value = v.name;
       opt.textContent = v.name.replace(/\(.*?\)/g, '').trim();
-      opt.dataset.lang = v.lang;
       grp.appendChild(opt);
     });
     sel.appendChild(grp);
   });
 
-  // Restore or pick default English
   if (prev && [...sel.options].find(o => o.value === prev)) {
     sel.value = prev;
-  } else {
-    const defVoice = voices.find(v => v.lang.startsWith('en') && v.localService);
-    if (defVoice) sel.value = defVoice.name;
+  } else if (sel.options.length) {
+    sel.selectedIndex = 0;
   }
 }
 
@@ -326,6 +299,14 @@ if (typeof speechSynthesis !== 'undefined') {
   loadVoices();
   speechSynthesis.onvoiceschanged = loadVoices;
 }
+
+document.getElementById('languageSelect').addEventListener('change', async (e) => {
+  targetLanguage = e.target.value;
+  populateVoiceList();
+  if (!extractedText) return;
+  await prepareSpeechText();
+  if (speaking) { stopSpeaking(); setTimeout(() => speakFrom(0), 100); }
+});
 
 document.getElementById('voiceSelect').addEventListener('change', () => {
   if (speaking) { stopSpeaking(); setTimeout(() => speakFrom(currentSentence), 100); }
@@ -340,7 +321,6 @@ document.getElementById('sheetCancelBtn').addEventListener('click', closeSheet);
 document.getElementById('takePhotoBtn').addEventListener('click', () => { closeSheet(); document.getElementById('cameraInput').click(); });
 document.getElementById('chooseLibraryBtn').addEventListener('click', () => { closeSheet(); document.getElementById('libraryInput').click(); });
 document.getElementById('chooseFileBtn').addEventListener('click', () => { closeSheet(); document.getElementById('filePickerInput').click(); });
-
 ['cameraInput','libraryInput','filePickerInput'].forEach(id => {
   document.getElementById(id).addEventListener('change', async e => {
     const file = e.target.files[0]; if (!file) return;
@@ -354,6 +334,7 @@ async function processImage(file) {
   const img = document.getElementById('previewImg');
   img.src = url; img.classList.add('visible');
   document.getElementById('idleScreen').style.display = 'none';
+  document.getElementById('scanningLabel').textContent = 'Reading text…';
   document.getElementById('scanningOverlay').classList.add('visible');
   document.getElementById('resultPanel').classList.remove('visible');
   document.getElementById('playbackPanel').classList.remove('visible');
@@ -364,11 +345,13 @@ async function processImage(file) {
     const base64 = await toBase64(file);
     const text = await extractText(base64, file.type || 'image/jpeg');
     extractedText = text;
-    sentences = splitSentences(text);
-    currentSentence = 0;
     document.getElementById('resultText').textContent = text;
     document.getElementById('resultPanel').classList.add('visible');
     document.getElementById('playbackPanel').classList.add('visible');
+
+    await prepareSpeechText();
+
+    currentSentence = 0; elapsed = 0;
     updatePlayBtn(false);
     estimateDuration();
     updateProgress(0);
@@ -382,17 +365,14 @@ async function processImage(file) {
 
 function toBase64(file) {
   return new Promise((res, rej) => {
-    const r = new FileReader();
-    r.onload = () => res(r.result.split(',')[1]);
-    r.onerror = rej;
-    r.readAsDataURL(file);
+    const r = new FileReader(); r.onload = () => res(r.result.split(',')[1]); r.onerror = rej; r.readAsDataURL(file);
   });
 }
 
 async function extractText(base64, mediaType) {
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
+  const res = await fetch(WORKER_URL, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       model: 'claude-sonnet-4-6', max_tokens: 1000,
       messages: [{ role: 'user', content: [
@@ -403,175 +383,206 @@ async function extractText(base64, mediaType) {
   });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
-    if (res.status === 401) throw new Error('Invalid API key — tap ⚙️ to update it');
     throw new Error(err.error?.message || `Error ${res.status}`);
   }
   const data = await res.json();
   return data.content.map(b => b.text || '').join('').trim();
 }
 
-// ── Sentence splitting ──
+const LANG_NAMES = {
+  en: 'English', es: 'Spanish', fr: 'French', de: 'German', it: 'Italian',
+  pt: 'Portuguese', zh: 'Mandarin Chinese', ja: 'Japanese', ko: 'Korean',
+  ar: 'Arabic', hi: 'Hindi', ru: 'Russian', vi: 'Vietnamese', tl: 'Tagalog'
+};
+
+async function translateText(text, langCode) {
+  const langName = LANG_NAMES[langCode] || langCode;
+  const res = await fetch(WORKER_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-6', max_tokens: 2000,
+      messages: [{ role: 'user', content: [
+        { type: 'text', text: `Translate the following text into ${langName}. Return ONLY the translated text with no commentary, no notes, no original text included:\n\n${text}` }
+      ]}]
+    })
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error?.message || `Translation error ${res.status}`);
+  }
+  const data = await res.json();
+  return data.content.map(b => b.text || '').join('').trim();
+}
+
+async function prepareSpeechText() {
+  if (targetLanguage === 'original' || !extractedText || extractedText === '(No text found)') {
+    speakText = extractedText;
+    sentences = splitSentences(speakText);
+    return;
+  }
+  document.getElementById('idleScreen').style.display = 'none';
+  document.getElementById('previewImg').classList.add('visible');
+  document.getElementById('scanningLabel').textContent = `Translating to ${LANG_NAMES[targetLanguage]}…`;
+  document.getElementById('scanningOverlay').classList.add('visible');
+  try {
+    speakText = await translateText(extractedText, targetLanguage);
+  } catch (err) {
+    showToast('⚠️ Translation failed, using original text');
+    speakText = extractedText;
+  } finally {
+    document.getElementById('scanningOverlay').classList.remove('visible');
+  }
+  sentences = splitSentences(speakText);
+}
+
+// ── Sentence splitting (handles CJK punctuation too) ──
 function splitSentences(text) {
-  const parts = text.match(/[^.!?\n]+[.!?\n]*/g) || [text];
+  const parts = text.match(/[^.!?。！？\n]+[.!?。！？\n]*/g) || [text];
   return parts.map(s => s.trim()).filter(Boolean);
 }
 
 // ── Duration estimation ──
 function estimateDuration() {
-  const wordCount = extractedText.split(/\s+/).length;
-  const wordsPerMin = 150 * speechRate;
-  estimatedDuration = Math.round((wordCount / wordsPerMin) * 60);
+  const wordCount = (speakText || extractedText).split(/\s+/).length;
+  const wpm = 150 * speechRate;
+  estimatedDuration = Math.max(1, Math.round((wordCount / wpm) * 60));
   document.getElementById('timeTotal').textContent = formatTime(estimatedDuration);
 }
 
-function formatTime(s) {
-  const m = Math.floor(s / 60);
-  const sec = Math.floor(s % 60);
-  return `${m}:${sec.toString().padStart(2, '0')}`;
-}
+function formatTime(s) { return `${Math.floor(s/60)}:${Math.floor(s%60).toString().padStart(2,'0')}`; }
 
-// ── Progress bar ──
-function updateProgress(fraction) {
-  fraction = Math.max(0, Math.min(1, fraction));
-  document.getElementById('progressFill').style.width = (fraction * 100) + '%';
-  document.getElementById('progressThumb').style.left = (fraction * 100) + '%';
-  document.getElementById('timeCurrent').textContent = formatTime(fraction * estimatedDuration);
+function updateProgress(f) {
+  f = Math.max(0, Math.min(1, f));
+  document.getElementById('progressFill').style.width = (f*100)+'%';
+  document.getElementById('progressThumb').style.left = (f*100)+'%';
+  document.getElementById('timeCurrent').textContent = formatTime(f * estimatedDuration);
 }
 
 function startTimer() {
   clearInterval(timerInterval);
   timerInterval = setInterval(() => {
+    if (isDragging) return;
     elapsed = Math.min(elapsed + 0.25, estimatedDuration);
     updateProgress(elapsed / estimatedDuration);
   }, 250);
 }
-
 function stopTimer() { clearInterval(timerInterval); }
 
-// Scrub on tap
-document.getElementById('progressTrack').addEventListener('click', e => {
-  if (!sentences.length) return;
-  const track = e.currentTarget;
+// ── Draggable scrub bar (mouse + touch) ──
+const track = document.getElementById('progressTrack');
+const thumb = document.getElementById('progressThumb');
+
+function fractionFromEvent(e) {
   const rect = track.getBoundingClientRect();
-  const fraction = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-  const targetSentence = Math.floor(fraction * sentences.length);
+  const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+  return Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+}
+
+function scrubTo(fraction, commit) {
   elapsed = fraction * estimatedDuration;
   updateProgress(fraction);
-  if (speaking) { stopSpeaking(); setTimeout(() => speakFrom(targetSentence), 80); }
-  else { currentSentence = targetSentence; }
-});
+  if (commit) {
+    const target = Math.min(sentences.length - 1, Math.floor(fraction * sentences.length));
+    if (speaking) { stopSpeaking(); setTimeout(() => speakFrom(target), 80); }
+    else { currentSentence = target; }
+  }
+}
+
+function dragStart(e) {
+  isDragging = true;
+  thumb.classList.add('dragging');
+  scrubTo(fractionFromEvent(e), false);
+  e.preventDefault();
+}
+function dragMove(e) {
+  if (!isDragging) return;
+  scrubTo(fractionFromEvent(e), false);
+  e.preventDefault();
+}
+function dragEnd(e) {
+  if (!isDragging) return;
+  isDragging = false;
+  thumb.classList.remove('dragging');
+  const f = elapsed / estimatedDuration;
+  scrubTo(f, true);
+}
+
+track.addEventListener('mousedown', dragStart);
+window.addEventListener('mousemove', dragMove);
+window.addEventListener('mouseup', dragEnd);
+track.addEventListener('touchstart', dragStart, { passive: false });
+window.addEventListener('touchmove', dragMove, { passive: false });
+window.addEventListener('touchend', dragEnd);
 
 // ── Speech ──
 function getVoice() {
-  const sel = document.getElementById('voiceSelect');
-  const name = sel.value;
+  const name = document.getElementById('voiceSelect').value;
   return speechSynthesis.getVoices().find(v => v.name === name) || null;
 }
-
 function speakFrom(index) {
-  if (!sentences.length || index >= sentences.length) return;
-  stopSpeaking(true);
-  currentSentence = index;
-  speakNext();
+  if (!sentences.length) return;
+  index = Math.max(0, Math.min(sentences.length - 1, index));
+  stopSpeaking(true); currentSentence = index; speakNext();
 }
-
 function speakNext() {
-  if (currentSentence >= sentences.length) {
-    speaking = false;
-    updatePlayBtn(false);
-    stopTimer();
-    updateProgress(1);
-    return;
-  }
+  if (currentSentence >= sentences.length) { speaking = false; updatePlayBtn(false); stopTimer(); updateProgress(1); return; }
   const u = new SpeechSynthesisUtterance(sentences[currentSentence]);
   u.rate = speechRate;
-  const voice = getVoice();
-  if (voice) u.voice = voice;
-
+  const voice = getVoice(); if (voice) { u.voice = voice; u.lang = voice.lang; }
   u.onstart = () => { speaking = true; updatePlayBtn(true); startTimer(); };
   u.onend = () => { currentSentence++; speakNext(); };
-  u.onerror = (e) => { if (e.error !== 'interrupted') { speaking = false; updatePlayBtn(false); stopTimer(); } };
+  u.onerror = e => { if (e.error !== 'interrupted') { speaking = false; updatePlayBtn(false); stopTimer(); } };
   speechSynthesis.speak(u);
 }
-
 function stopSpeaking(silent = false) {
-  speechSynthesis?.cancel();
-  speaking = false;
-  stopTimer();
+  speechSynthesis?.cancel(); speaking = false; stopTimer();
   if (!silent) updatePlayBtn(false);
 }
+function updatePlayBtn(isPlaying) { document.getElementById('playBtn').textContent = isPlaying ? '⏸️' : '▶️'; }
 
-function updatePlayBtn(isPlaying) {
-  document.getElementById('playBtn').textContent = isPlaying ? '⏸️' : '▶️';
-}
-
-// ── Transport controls ──
-document.getElementById('playBtn').addEventListener('click', () => {
-  if (speaking) { stopSpeaking(); }
-  else { speakFrom(currentSentence); }
-});
-
-document.getElementById('restartBtn').addEventListener('click', () => {
-  elapsed = 0; currentSentence = 0; updateProgress(0);
-  stopSpeaking(); setTimeout(() => speakFrom(0), 80);
-});
-
+// Transport
+document.getElementById('playBtn').addEventListener('click', () => { speaking ? stopSpeaking() : speakFrom(currentSentence); });
+document.getElementById('restartBtn').addEventListener('click', () => { elapsed=0; currentSentence=0; updateProgress(0); stopSpeaking(); setTimeout(() => speakFrom(0), 80); });
 document.getElementById('skipBackBtn').addEventListener('click', () => {
-  const target = Math.max(0, currentSentence - 2);
-  elapsed = Math.max(0, elapsed - 10);
-  updateProgress(elapsed / estimatedDuration);
-  if (speaking) { stopSpeaking(); setTimeout(() => speakFrom(target), 80); }
-  else { currentSentence = target; }
+  const t = Math.max(0, currentSentence-2); elapsed = Math.max(0, elapsed-10); updateProgress(elapsed/estimatedDuration);
+  if (speaking) { stopSpeaking(); setTimeout(() => speakFrom(t), 80); } else { currentSentence=t; }
 });
-
 document.getElementById('skipFwdBtn').addEventListener('click', () => {
-  const target = Math.min(sentences.length - 1, currentSentence + 2);
-  elapsed = Math.min(estimatedDuration, elapsed + 10);
-  updateProgress(elapsed / estimatedDuration);
-  if (speaking) { stopSpeaking(); setTimeout(() => speakFrom(target), 80); }
-  else { currentSentence = target; }
+  const t = Math.min(sentences.length-1, currentSentence+2); elapsed = Math.min(estimatedDuration, elapsed+10); updateProgress(elapsed/estimatedDuration);
+  if (speaking) { stopSpeaking(); setTimeout(() => speakFrom(t), 80); } else { currentSentence=t; }
 });
+document.getElementById('skipEndBtn').addEventListener('click', () => { stopSpeaking(); elapsed=estimatedDuration; updateProgress(1); currentSentence=sentences.length; });
 
-document.getElementById('skipEndBtn').addEventListener('click', () => {
-  stopSpeaking(); elapsed = estimatedDuration; updateProgress(1);
-  currentSentence = sentences.length;
-});
-
-// ── Speed chips ──
+// Speed
 document.getElementById('speedChips').addEventListener('click', e => {
-  const chip = e.target.closest('.speed-chip');
-  if (!chip) return;
+  const chip = e.target.closest('.speed-chip'); if (!chip) return;
   document.querySelectorAll('.speed-chip').forEach(c => c.classList.remove('active'));
-  chip.classList.add('active');
-  speechRate = parseFloat(chip.dataset.rate);
+  chip.classList.add('active'); speechRate = parseFloat(chip.dataset.rate);
   estimateDuration();
   if (speaking) { stopSpeaking(); setTimeout(() => speakFrom(currentSentence), 80); }
 });
 
-// ── Clear ──
+// Clear
 document.getElementById('clearBtn').addEventListener('click', () => {
-  stopSpeaking();
-  extractedText = ''; sentences = []; currentSentence = 0; elapsed = 0;
-  const img = document.getElementById('previewImg');
-  img.src = ''; img.classList.remove('visible');
-  document.getElementById('idleScreen').style.display = '';
+  stopSpeaking(); extractedText=''; speakText=''; sentences=[]; currentSentence=0; elapsed=0;
+  const img = document.getElementById('previewImg'); img.src=''; img.classList.remove('visible');
+  document.getElementById('idleScreen').style.display='';
   document.getElementById('resultPanel').classList.remove('visible');
   document.getElementById('playbackPanel').classList.remove('visible');
   document.getElementById('clearBtn').classList.remove('visible');
   updateProgress(0);
 });
 
-// ── Copy ──
+// Copy
 document.getElementById('copyBtn').addEventListener('click', async () => {
   if (!extractedText) return;
   try { await navigator.clipboard.writeText(extractedText); showToast('✓ Copied!'); }
   catch { showToast('Long-press text to copy'); }
 });
 
-// ── Toast ──
 function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
+  const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2500);
 }
 </script>
