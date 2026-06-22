@@ -304,8 +304,21 @@ document.getElementById('languageSelect').addEventListener('change', async (e) =
   targetLanguage = e.target.value;
   populateVoiceList();
   if (!extractedText) return;
-  await prepareSpeechText();
-  if (speaking) { stopSpeaking(); setTimeout(() => speakFrom(0), 100); }
+  const wasSpeaking = speaking;
+  stopSpeaking();
+  document.getElementById('cameraBtn').disabled = true;
+  try {
+    await prepareSpeechText();
+    currentSentence = 0; elapsed = 0;
+    estimateDuration();
+    updateProgress(0);
+    speakFrom(0);
+  } catch (err) {
+    showToast('⚠️ ' + (err.message || 'Something went wrong'));
+  } finally {
+    document.getElementById('scanningOverlay').classList.remove('visible');
+    document.getElementById('cameraBtn').disabled = false;
+  }
 });
 
 document.getElementById('voiceSelect').addEventListener('change', () => {
@@ -397,22 +410,35 @@ const LANG_NAMES = {
 
 async function translateText(text, langCode) {
   const langName = LANG_NAMES[langCode] || langCode;
-  const res = await fetch(WORKER_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-6', max_tokens: 2000,
-      messages: [{ role: 'user', content: [
-        { type: 'text', text: `Translate the following text into ${langName}. Return ONLY the translated text with no commentary, no notes, no original text included:\n\n${text}` }
-      ]}]
-    })
-  });
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err.error?.message || `Translation error ${res.status}`);
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 45000); // 45s timeout (Render cold start can be slow)
+
+  try {
+    const res = await fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      signal: controller.signal,
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6', max_tokens: 2000,
+        messages: [{ role: 'user', content: [
+          { type: 'text', text: `Translate the following text into ${langName}. Return ONLY the translated text with no commentary, no notes, no original text included:\n\n${text}` }
+        ]}]
+      })
+    });
+    clearTimeout(timeoutId);
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error?.message || `Translation error ${res.status}`);
+    }
+    const data = await res.json();
+    return data.content.map(b => b.text || '').join('').trim();
+  } catch (err) {
+    clearTimeout(timeoutId);
+    if (err.name === 'AbortError') {
+      throw new Error('Server is waking up — please try again in a moment');
+    }
+    throw err;
   }
-  const data = await res.json();
-  return data.content.map(b => b.text || '').join('').trim();
 }
 
 async function prepareSpeechText() {
@@ -428,7 +454,7 @@ async function prepareSpeechText() {
   try {
     speakText = await translateText(extractedText, targetLanguage);
   } catch (err) {
-    showToast('⚠️ Translation failed, using original text');
+    showToast('⚠️ ' + (err.message || 'Translation failed') + ' — using original text');
     speakText = extractedText;
   } finally {
     document.getElementById('scanningOverlay').classList.remove('visible');
